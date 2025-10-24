@@ -7,7 +7,7 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from 'chart.js';  
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 import toast from 'react-hot-toast';
@@ -50,8 +50,7 @@ const Dashboard: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault();  
     // Check if all fields are filled
     if (!aInput || !bInput || !cInput) {
       toast.error('All fields are required');
@@ -278,3 +277,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
