@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { PieChart } from '@mui/x-charts/PieChart';
+import { Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 import toast from 'react-hot-toast';
 import { userService } from '../service/user.service';
 
@@ -106,11 +114,15 @@ const Dashboard: React.FC = () => {
 
   // Use preview chart if available, otherwise use current chart
   const displayChart = previewChart || currentChart;
-  const chartData = displayChart ? [
-    { id: 0, value: displayChart.valueA, label: `A: ${displayChart.valueA}%`, color: '#EF4444' },
-    { id: 1, value: displayChart.valueB, label: `B: ${displayChart.valueB}%`, color: '#10B981' },
-    { id: 2, value: displayChart.valueC, label: `C: ${displayChart.valueC}%`, color: '#3B82F6' }
-  ] : [];
+  const chartData = displayChart ? {
+    labels: [`A: ${displayChart.valueA}%`, `B: ${displayChart.valueB}%`, `C: ${displayChart.valueC}%`],
+    datasets: [{
+      data: [displayChart.valueA, displayChart.valueB, displayChart.valueC],
+      backgroundColor: ['#EF4444', '#10B981', '#3B82F6'],
+      borderWidth: 2,
+      borderColor: '#fff'
+    }]
+  } : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 p-5">
@@ -204,18 +216,20 @@ const Dashboard: React.FC = () => {
                   📊 Current Distribution
                 </h3>
                 <div className="flex justify-center">
-                  <PieChart
-                    series={[{
-                      data: chartData,
-                      highlightScope: { fade: 'global', highlight: 'item' },
-                      faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-                      innerRadius: 40,
-                      outerRadius: 120,
-                    }]}
-                    width={400}
-                    height={300}
-
-                  />
+                  <div style={{ width: '400px', height: '300px' }}>
+                    <Pie 
+                      data={chartData!} 
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            position: 'bottom' as const,
+                          },
+                        },
+                      }}
+                    />
+                  </div>
                 </div>
                 <div className="grid grid-cols-3 gap-4 mt-4">
                   <div className="text-center p-3 bg-red-100 rounded-lg">

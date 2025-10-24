@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { PieChart } from '@mui/x-charts/PieChart';
+import { Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 interface DataEntry {
   id: number;
@@ -17,11 +25,15 @@ interface DataCardProps {
 const DataCard: React.FC<DataCardProps> = ({ data, index }) => {
   const [showMiniChart, setShowMiniChart] = useState(false);
 
-  const chartData = [
-    { id: 0, value: data.valueA, label: `A: ${data.valueA}%`, color: '#3B82F6' },
-    { id: 1, value: data.valueB, label: `B: ${data.valueB}%`, color: '#8B5CF6' },
-    { id: 2, value: data.valueC, label: `C: ${data.valueC}%`, color: '#06B6D4' }
-  ];
+  const chartData = {
+    labels: [`A: ${data.valueA}%`, `B: ${data.valueB}%`, `C: ${data.valueC}%`],
+    datasets: [{
+      data: [data.valueA, data.valueB, data.valueC],
+      backgroundColor: ['#3B82F6', '#8B5CF6', '#06B6D4'],
+      borderWidth: 1,
+      borderColor: '#fff'
+    }]
+  };
 
   return (
     <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-xl border border-gray-200 hover:shadow-lg transition-all">
@@ -58,15 +70,20 @@ const DataCard: React.FC<DataCardProps> = ({ data, index }) => {
 
       {showMiniChart && (
         <div className="bg-white rounded-lg p-3 border">
-          <PieChart
-            series={[{
-              data: chartData,
-              innerRadius: 20,
-              outerRadius: 60,
-            }]}
-            width={200}
-            height={150}
-          />
+          <div style={{ width: '200px', height: '150px' }}>
+            <Pie 
+              data={chartData} 
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
+                },
+              }}
+            />
+          </div>
         </div>
       )}
     </div>
