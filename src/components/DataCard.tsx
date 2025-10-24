@@ -33,9 +33,10 @@ const DataCard: React.FC<DataCardProps> = ({ data, index }) => {
           </span>
           <button
             onClick={() => setShowMiniChart(!showMiniChart)}
-            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            className="flex items-center gap-1 bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded-lg text-xs font-medium transition-colors"
+            title={showMiniChart ? 'Hide Chart' : 'Show Pie Chart'}
           >
-            {showMiniChart ? '📊' : '👁️'}
+            {showMiniChart ? '📊 Hide' : '📊 Chart'}
           </button>
         </div>
       </div>

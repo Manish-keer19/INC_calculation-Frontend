@@ -43,9 +43,29 @@ const Dashboard: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const a = parseFloat(aInput) || 0;
-    const b = parseFloat(bInput) || 0;
-    const c = parseFloat(cInput) || 0;
+    
+    // Check if all fields are filled
+    if (!aInput || !bInput || !cInput) {
+      toast.error('All fields are required');
+      return;
+    }
+    
+    const a = parseFloat(aInput);
+    const b = parseFloat(bInput);
+    const c = parseFloat(cInput);
+    
+    // Check if all values are greater than zero
+    if (a <= 0 || b <= 0 || c <= 0) {
+      toast.error('All values must be greater than zero');
+      return;
+    }
+    
+    // Check if any single value is 100 or more
+    if (a >= 100 || b >= 100 || c >= 100) {
+      toast.error('No single value can be 100 or more');
+      return;
+    }
+    
     const sum = a + b + c;
 
     if (sum === 100) {
@@ -128,6 +148,10 @@ const Dashboard: React.FC = () => {
                     type="number"
                     value={aInput}
                     onChange={(e) => setAInput(e.target.value)}
+                    min="0.01"
+                    max="99.99"
+                    step="0.01"
+                    required
                     className="w-full p-3 border-2 border-gray-300 rounded-xl text-center focus:border-indigo-500 outline-none transition-colors"
                   />
                 </div>
@@ -140,6 +164,10 @@ const Dashboard: React.FC = () => {
                     type="number"
                     value={bInput}
                     onChange={(e) => setBInput(e.target.value)}
+                    min="0.01"
+                    max="99.99"
+                    step="0.01"
+                    required
                     className="w-full p-3 border-2 border-gray-300 rounded-xl text-center focus:border-indigo-500 outline-none transition-colors"
                   />
                 </div>
@@ -152,6 +180,10 @@ const Dashboard: React.FC = () => {
                     type="number"
                     value={cInput}
                     onChange={(e) => setCInput(e.target.value)}
+                    min="0.01"
+                    max="99.99"
+                    step="0.01"
+                    required
                     className="w-full p-3 border-2 border-gray-300 rounded-xl text-center focus:border-indigo-500 outline-none transition-colors"
                   />
                 </div>
