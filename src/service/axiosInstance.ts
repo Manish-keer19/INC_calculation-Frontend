@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL ="http://localhost:3000"
+// const BASE_URL ="http://localhost:3000"
+const BASE_URL ="https://inc-calculation-backend.onrender.com"
 
 // Create an Axios instance
 const axiosInstance = axios.create({
